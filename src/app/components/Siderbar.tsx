@@ -15,7 +15,8 @@ export default function Sidebar() {
   // function to handle navigation through boards
   const handleNav = (index: number, name: string) => {
     setActiveBoard(index)
-    setCurrentBoardName(name)
+    // console.log('name', name)
+    dispatch(setCurrentBoardName(name))
   }
 
   return (
@@ -33,8 +34,8 @@ export default function Sidebar() {
               const isActive = index === activeBoard
               return (
                 <div
-                  key={id} 
-                  onClick={()=>handleNav(index, name)}
+                  key={index} 
+                  onClick={()=> handleNav(index, name)}
                   className={`
                     ${isActive 
                       ? 'rounded-tr-full rounded-br-full bg-blue-500 text-white'
@@ -44,7 +45,7 @@ export default function Sidebar() {
                     space-x-2 pl-[2.12rem] py-3 pb-3
                   `}
                 >
-                  <p className="text-white text-lg capitalize">{name}</p>
+                  <p className="text-lg capitalize">{name}</p>
                 </div>
               )
             }

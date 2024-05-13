@@ -32,13 +32,17 @@ export const fireStoreApi = createApi({
         try {
           const session = await getSession();
           if (session?.user) {
+
+            console.log('board data', boardData)
             const { user } = session
             const ref = collection(db, `users/${user.email}/tasks`);
             const querySnapshot = await getDocs(ref);
             const boardId = querySnapshot.docs.map((doc) => {
               return doc.id;
             })
-            await updateDoc(doc(db, `users/${user.email}/tasks/${boardId}`), {
+
+            console.log('board update', boardId[0])
+            await updateDoc(doc(db, `users/${user.email}/tasks/${boardId[0]}`), {
               boards: boardData
             })
           }

@@ -1,7 +1,7 @@
 // src/app/components/BoardTasks.tsx
 
-import { getCurrentBoardName } from "@/components/redux/features/appSlice";
-import { useAppSelector } from "@/components/redux/hooks";
+import { getCurrentBoardName, openAddAndEditBoardModal, openAddAndEditTaskModal } from "@/components/redux/features/appSlice";
+import { useAppDispatch, useAppSelector } from "@/components/redux/hooks";
 import { useFetchDataFromDbQuery } from "@/components/redux/services/apiSlice";
 import { useEffect, useState } from "react";
 // import { MdEdit, MdDelete } from "react-icons/md";
@@ -26,6 +26,7 @@ export default function BoardTasks() {
   const [columns, setColumns] = useState<Column[]>([])
   // get active board name from redux store
   const activeBoard = useAppSelector(getCurrentBoardName)
+  const dispatch = useAppDispatch();
 
   // once data is fetched we handle the side effects
   useEffect(() => {
@@ -68,7 +69,7 @@ export default function BoardTasks() {
                         </p>
                         {tasks && 
                           (tasks.length > 0 ? (
-                            tasks.map((task) => {
+                            tasks.map((task, index) => {
                               const {id, title, status} = task;
                               return (
                                 <div
@@ -79,7 +80,12 @@ export default function BoardTasks() {
                                   <div className="flex items-center space-x-1">
                                     {/* <MdEdit className="text-lg cursor-pointer" />
                                     <MdDelete className="text-lg cursor-pointer text-red-500" /> */}
-                                    <button className="flex items-center space-x-2 p-2 bg-amber-400 rounded-lg hover:scale-105">
+                                    <button 
+                                      onClick={() => dispatch(openAddAndEditTaskModal( { 
+                                        variant: 'Edit Task',title, index, name
+                                      }))}
+                                      className="flex items-center space-x-2 p-2 bg-amber-400 rounded-lg hover:scale-105"
+                                    >
                                       <p className="text-xs font-bold capitalize text-main-purple">
                                         Edit
                                       </p>
@@ -102,7 +108,10 @@ export default function BoardTasks() {
                   })}
                   {/* If the number of columns of tasks is less than 7, display an option to add more columns */}
                   {columns.length < 7 ? (
-                    <div className="rounded-md bg-white w-[17.5rem] mt-12 shrink-0 flex justify-center items-center mr-5">
+                    <div 
+                      onClick={() => dispatch(openAddAndEditBoardModal('New Column'))}
+                      className="rounded-md bg-white w-[17.5rem] mt-12 shrink-0 flex justify-center items-center mr-5"
+                    >
                       <p className="cursor-pointer font-bold text-black text-2xl">
                         + New Column
                       </p>
