@@ -28,7 +28,6 @@ export const features = createSlice({
     // This function updates the board name when called
     setCurrentBoardName: (state, action: PayloadAction<string>) => {
       state.currentBoardName = action.payload;
-      // return { ...state, currentBoardName: action.payload }
     },
     // open add/edit board modal with a specified variant (add or edit)
     openAddAndEditBoardModal: (state, { payload }) => {
